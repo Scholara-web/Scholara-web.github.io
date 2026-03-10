@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Scholara — Study Tracker</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--n950:#04091a;--n900:#070f24;--n800:#0c1a38;--n700:#112248;--gold:#c8a84b;--gl:#e2c87a;--gd:#8a6f2e;--teal:#4bbfcc;--td:#2a8a94;--tp:#f0ebdf;--ts:#a8b4c8;--tm:#5a6a82;--border:rgba(200,168,75,0.14);--bb:rgba(200,168,75,0.28);--card:rgba(12,26,56,0.75);--ok:#4bbf8a;--err:#e05c5c;--sw:230px}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--n950);color:var(--tp);min-height:100vh;display:flex;overflow-x:hidden;line-height:1.6}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--gd);border-radius:2px}
+.sidebar{width:var(--sw);flex-shrink:0;background:linear-gradient(180deg,var(--n800),var(--n900));border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50}
+.s-logo{padding:1.3rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;text-decoration:none}
+.s-mark{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--gold),var(--gd));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--n900);flex-shrink:0}
+.s-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--tp)}
+.s-nav{flex:1;padding:.8rem .6rem;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
+.s-lbl{font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--tm);padding:.65rem 10px .2rem}
+.s-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;font-size:.85rem;font-weight:500;color:var(--tm);transition:all .2s;border:1px solid transparent;background:none;width:100%;text-align:left;text-decoration:none}
+.s-item:hover{background:rgba(255,255,255,.04);color:var(--ts)}
+.s-item.active{background:rgba(200,168,75,.1);color:var(--gl);border-color:rgba(200,168,75,.15)}
+.s-icon{font-size:.9rem;width:20px;text-align:center;flex-shrink:0}
+.s-bot{padding:.6rem;border-top:1px solid var(--border)}
+.u-card{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid var(--border);margin-bottom:6px}
+.u-av{width:32px;height:32px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--gold),var(--td));display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:600;color:var(--n900);overflow:hidden}
+.u-av img{width:100%;height:100%;object-fit:cover}
+.u-name{font-size:.78rem;font-weight:600;color:var(--tp)}.u-email{font-size:.66rem;color:var(--tm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.so-btn{width:100%;padding:7px;border-radius:7px;background:transparent;border:1px solid var(--border);color:var(--tm);font-family:'DM Sans',sans-serif;font-size:.76rem;cursor:pointer;transition:all .2s}
+.so-btn:hover{border-color:var(--err);color:var(--err)}
+.main{margin-left:var(--sw);flex:1;min-height:100vh;display:flex;flex-direction:column}
+.topbar{height:56px;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(4,9,26,.88);backdrop-filter:blur(12px);position:sticky;top:0;z-index:40}
+.t-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--tp)}
+.t-date{font-size:.72rem;color:var(--tm);font-family:'DM Mono',monospace}
+.content{padding:1.5rem;flex:1}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.4rem;backdrop-filter:blur(12px)}
+.c-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;color:var(--tp);margin-bottom:.9rem;display:flex;align-items:center;gap:7px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+.mb{margin-bottom:1.2rem}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem}
+.s-lbl2{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--tm);margin-bottom:.25rem}
+.s-val{font-family:'Cormorant Garamond',serif;font-size:1.85rem;font-weight:700;color:var(--gl);line-height:1;margin-bottom:.18rem}
+.s-sub{font-size:.7rem;color:var(--ts)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;cursor:pointer;transition:all .22s;text-decoration:none;border:none}
+.btn-g{background:linear-gradient(135deg,var(--gold),#a8892e);color:var(--n900);font-weight:600}
+.btn-g:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(200,168,75,.3)}
+.btn-o{background:transparent;border:1px solid var(--bb);color:var(--ts)}
+.btn-o:hover{border-color:var(--gd);color:var(--gl)}
+.btn-t{background:rgba(75,191,204,.1);border:1px solid rgba(75,191,204,.25);color:var(--teal)}
+.btn-t:hover{background:rgba(75,191,204,.18)}
+.btn-r{background:rgba(224,92,92,.1);border:1px solid rgba(224,92,92,.2);color:#f08080}
+.btn-r:hover{background:rgba(224,92,92,.18)}
+.btn-sm{padding:5px 12px;font-size:.78rem}
+.btn-lg{padding:11px 26px;font-size:.95rem}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.inp{width:100%;padding:8px 12px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.86rem;color:var(--tp);outline:none;transition:border-color .2s}
+.inp::placeholder{color:var(--tm)}.inp:focus{border-color:var(--gd)}
+.sel{padding:8px 9px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.83rem;color:var(--ts);outline:none;cursor:pointer}
+.sel option{background:var(--n800)}
+.lbl{display:block;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--ts);margin-bottom:4px}
+.spin{width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,.15);border-top-color:currentColor;animation:sp .7s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:2rem;color:var(--tm);font-size:.855rem}
+.sess-item{display:flex;align-items:center;gap:9px;padding:9px 13px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;margin-bottom:5px;transition:border-color .2s}
+.sess-item:hover{border-color:var(--bb)}
+.s-del{background:none;border:none;color:var(--tm);cursor:pointer;opacity:0;transition:all .2s;font-size:.82rem}
+.sess-item:hover .s-del{opacity:1}.s-del:hover{color:var(--err)}
+.timer-hero{background:linear-gradient(135deg,rgba(26,49,96,.5),rgba(12,26,56,.8));border:1px solid var(--bb);border-radius:18px;padding:2.5rem 2rem;text-align:center}
+.rbg{fill:none;stroke:var(--n700);stroke-width:7}
+.rpr{fill:none;stroke:var(--gold);stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset .5s ease}
+.rtime{font-family:'DM Mono',monospace;font-size:2.5rem;color:var(--gl);letter-spacing:.03em;text-align:center}
+.rmode{font-size:.68rem;color:var(--tm);text-transform:uppercase;letter-spacing:.1em;margin-top:3px;text-align:center}
+.note-item{padding:9px 11px;border-radius:9px;cursor:pointer;border:1px solid transparent;transition:all .2s;margin-bottom:4px}
+.note-item:hover{background:rgba(255,255,255,.04);border-color:var(--border)}
+.note-item.active{background:rgba(200,168,75,.08);border-color:var(--bb)}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.4rem}
+.chart-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;color:var(--tp);margin-bottom:.9rem}
+.chart-wrap{position:relative;height:190px}
+.bar-item{margin-bottom:11px}
+.bar-top{display:flex;justify-content:space-between;font-size:.76rem;margin-bottom:3px}
+.bar-nm{color:var(--ts)}.bar-vl{color:var(--gl);font-family:'DM Mono',monospace}
+.bar-track{height:6px;background:var(--n700);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gd),var(--gold));transition:width 1s ease}
+@media(max-width:900px){.sidebar{display:none}.main{margin-left:0}.g2,.g4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <a href="index.html" class="s-logo"><div class="s-mark">S</div><span class="s-name">Scholara</span></a>
+  <nav class="s-nav">
+    <span class="s-lbl">Overview</span>
+    <a href="dashboard.html" class="s-item "><span class="s-icon">🏠</span>Dashboard</a>
+<span class="s-lbl">Study Tools</span>
+    <a href="tasks.html" class="s-item "><span class="s-icon">✅</span>Tasks</a>
+    <a href="tracker.html" class="s-item active"><span class="s-icon">📚</span>Study Tracker</a>
+    <a href="pomodoro.html" class="s-item "><span class="s-icon">🍅</span>Pomodoro</a>
+    <a href="stopwatch.html" class="s-item "><span class="s-icon">⏲️</span>Stopwatch</a>
+    <a href="notes.html" class="s-item "><span class="s-icon">📝</span>Notes</a>
+<span class="s-lbl">Insights</span>
+    <a href="analytics.html" class="s-item "><span class="s-icon">📊</span>Analytics</a>
+
+  </nav>
+  <div class="s-bot">
+    <div class="u-card"><div class="u-av" id="uav">?</div><div><div class="u-name" id="uname">...</div><div class="u-email" id="uemail">—</div></div></div>
+    <button class="so-btn" id="sobtn">← Sign Out</button>
+  </div>
+</aside>
+<div class="main">
+  <header class="topbar"><div class="t-title">📚 Study Tracker</div><span class="t-date" id="tdate"></span></header>
+  <div class="content">
+    <div class="g2 mb" style="align-items:start">
+      <div>
+        <div class="timer-hero mb">
+          <div style="font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin-bottom:.5rem" id="ts-status">Ready to Study</div>
+          <div style="font-family:'DM Mono',monospace;font-size:3.5rem;color:var(--gl);letter-spacing:.05em;line-height:1;margin-bottom:.4rem" id="ts-time">00:00:00</div>
+          <div style="font-size:.85rem;color:var(--ts);margin-bottom:1.4rem" id="ts-subj">Select a subject below</div>
+          <div style="display:flex;gap:8px;justify-content:center">
+            <button class="btn btn-g btn-lg" id="ts-start" onclick="toggleTracker()">▶ Start Session</button>
+            <button class="btn btn-o btn-lg" id="ts-stop" onclick="stopAndSave()" style="display:none">■ Stop & Save</button>
+          </div>
+        </div>
+        <div class="card mb">
+          <div class="c-title">⚙️ Session Setup</div>
+          <div class="lbl">Subject</div>
+          <select class="sel" id="ss-subj" style="width:100%;padding:10px;font-size:.9rem;margin-bottom:1rem">
+            <option>General Study</option><option>Mathematics</option><option>Science</option>
+            <option>Physics</option><option>Chemistry</option><option>Biology</option>
+            <option>English</option><option>History</option><option>Computer Science</option><option>Other</option>
+          </select>
+          <div class="lbl">Session Notes (optional)</div>
+          <textarea class="inp" id="ss-notes" placeholder="What are you studying?" style="resize:none;min-height:65px;line-height:1.6"></textarea>
+        </div>
+        <div class="g2">
+          <div class="stat"><div class="s-lbl2">Today</div><div class="s-val" id="st-today">0m</div><div class="s-sub">Study time</div></div>
+          <div class="stat"><div class="s-lbl2">Sessions</div><div class="s-val" id="st-sess">0</div><div class="s-sub">Today</div></div>
+        </div>
+      </div>
+      <div class="card" style="max-height:620px;overflow-y:auto">
+        <div class="c-title">📅 Session History</div>
+        <div id="slist"><div class="empty">No sessions yet. Start your first one!</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyAX2yhFyqaYdkwD63iEK7fQSw0_mH3yfPQ",
+  authDomain: "scholara-f7c60.firebaseapp.com",
+  projectId: "scholara-f7c60",
+  storageBucket: "scholara-f7c60.firebasestorage.app",
+  messagingSenderId: "467753876713",
+  appId: "1:467753876713:web:2f0aeb3ce3933e5ace4478"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+let uid = null, sessions = [], running = false, startTime = null, elapsed = 0, iv = null;
+document.getElementById('tdate').textContent = new Date().toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'});
+const fmt = s => { const h=Math.floor(s/3600),m=Math.floor((s%3600)/60); return h>0?`${h}h ${m}m`:`${m}m`; };
+const fmtClock = s => `${String(Math.floor(s/3600)).padStart(2,'0')}:${String(Math.floor((s%3600)/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+
+function onUser(user) { uid = user.uid; loadSessions(); }
+
+  onAuthStateChanged(auth, user => {
+    if (!user) { window.location.href = 'auth.html'; return; }
+    const name = user.displayName || user.email.split('@')[0];
+    document.getElementById('uname').textContent = name;
+    document.getElementById('uemail').textContent = user.email;
+    const av = document.getElementById('uav');
+    if (user.photoURL) av.innerHTML = `<img src="${user.photoURL}"/>`;
+    else av.textContent = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+    onUser(user);
+  });
+  document.getElementById('sobtn').onclick = async () => { await signOut(auth); window.location.href='auth.html'; };
+
+async function loadSessions() {
+  const snap = await getDocs(query(collection(db,'users',uid,'sessions'), orderBy('createdAt','desc')));
+  sessions = snap.docs.map(d => ({...d.data(), id:d.id}));
+  renderSessions(); updateStats();
+}
+function updateStats() {
+  const today = new Date().toISOString().split('T')[0];
+  const ts = sessions.filter(s=>s.date===today);
+  document.getElementById('st-today').textContent = fmt(ts.reduce((a,s)=>a+(s.seconds||0),0));
+  document.getElementById('st-sess').textContent = ts.length;
+}
+function renderSessions() {
+  const el = document.getElementById('slist');
+  if (!sessions.length) { el.innerHTML='<div class="empty">No sessions yet.</div>'; return; }
+  el.innerHTML = sessions.map(s => `<div class="sess-item">
+    <span style="font-size:1.1rem">📚</span>
+    <div style="flex:1">
+      <div style="font-size:.855rem;color:var(--ts)">${s.subject||'General'}</div>
+      ${s.notes?`<div style="font-size:.7rem;color:var(--tm);margin-top:1px">${s.notes}</div>`:''}
+      <div style="font-size:.65rem;color:var(--tm);margin-top:2px">${s.date||''}</div>
+    </div>
+    <span style="font-family:'DM Mono',monospace;font-size:.88rem;color:var(--gl)">${fmtClock(s.seconds||0)}</span>
+    <button class="s-del" onclick="delSession('${s.id}')">✕</button>
+  </div>`).join('');
+}
+window.toggleTracker = function() {
+  if (!running) {
+    running = true; startTime = Date.now() - elapsed * 1000;
+    const subj = document.getElementById('ss-subj').value;
+    document.getElementById('ts-status').textContent = 'Studying...';
+    document.getElementById('ts-subj').textContent = subj;
+    document.getElementById('ts-start').innerHTML = '⏸ Pause';
+    document.getElementById('ts-stop').style.display = 'inline-flex';
+    iv = setInterval(() => { elapsed = Math.floor((Date.now()-startTime)/1000); document.getElementById('ts-time').textContent = fmtClock(elapsed); }, 500);
+  } else {
+    running = false; clearInterval(iv);
+    document.getElementById('ts-status').textContent = 'Paused';
+    document.getElementById('ts-start').innerHTML = '▶ Resume';
+  }
+};
+window.stopAndSave = async function() {
+  if (elapsed < 5) { alert('Study for at least 5 seconds!'); return; }
+  clearInterval(iv); running = false;
+  const subj = document.getElementById('ss-subj').value;
+  const notes = document.getElementById('ss-notes').value.trim();
+  const today = new Date().toISOString().split('T')[0];
+  const data = { subject:subj, notes, seconds:elapsed, date:today, createdAt:serverTimestamp() };
+  const ref = await addDoc(collection(db,'users',uid,'sessions'), data);
+  sessions.unshift({...data, id:ref.id, createdAt:new Date()});
+  elapsed = 0;
+  document.getElementById('ts-time').textContent = '00:00:00';
+  document.getElementById('ts-status').textContent = '✓ Saved!';
+  document.getElementById('ts-subj').textContent = 'Select a subject below';
+  document.getElementById('ts-start').innerHTML = '▶ Start Session';
+  document.getElementById('ts-stop').style.display = 'none';
+  document.getElementById('ss-notes').value = '';
+  renderSessions(); updateStats();
+  setTimeout(() => document.getElementById('ts-status').textContent = 'Ready to Study', 2000);
+};
+window.delSession = async function(id) {
+  if (!confirm('Delete this session?')) return;
+  sessions = sessions.filter(s=>s.id!==id);
+  await deleteDoc(doc(db,'users',uid,'sessions',id));
+  renderSessions(); updateStats();
+};
+</script>
+</body></html>

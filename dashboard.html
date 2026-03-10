@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Scholara — Dashboard</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--n950:#04091a;--n900:#070f24;--n800:#0c1a38;--n700:#112248;--n600:#1a3160;--gold:#c8a84b;--gl:#e2c87a;--gd:#8a6f2e;--teal:#4bbfcc;--td:#2a8a94;--tp:#f0ebdf;--ts:#a8b4c8;--tm:#5a6a82;--border:rgba(200,168,75,0.14);--bb:rgba(200,168,75,0.28);--card:rgba(12,26,56,0.75);--ok:#4bbf8a;--err:#e05c5c;--sw:230px}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--n950);color:var(--tp);min-height:100vh;display:flex;overflow-x:hidden;line-height:1.6}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--gd);border-radius:2px}
+.sidebar{width:var(--sw);flex-shrink:0;background:linear-gradient(180deg,var(--n800),var(--n900));border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50}
+.s-logo{padding:1.3rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;text-decoration:none}
+.s-mark{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--gold),var(--gd));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--n900);flex-shrink:0}
+.s-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--tp)}
+.s-nav{flex:1;padding:.8rem .6rem;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
+.s-lbl{font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--tm);padding:.65rem 10px .2rem}
+.s-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;font-size:.85rem;font-weight:500;color:var(--tm);transition:all .2s;border:1px solid transparent;background:none;width:100%;text-align:left;text-decoration:none}
+.s-item:hover{background:rgba(255,255,255,.04);color:var(--ts)}
+.s-item.active{background:rgba(200,168,75,.1);color:var(--gl);border-color:rgba(200,168,75,.15)}
+.s-icon{font-size:.9rem;width:20px;text-align:center;flex-shrink:0}
+.s-bot{padding:.6rem;border-top:1px solid var(--border)}
+.u-card{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid var(--border);margin-bottom:6px}
+.u-av{width:32px;height:32px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--gold),var(--td));display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:600;color:var(--n900);overflow:hidden}
+.u-av img{width:100%;height:100%;object-fit:cover}
+.u-name{font-size:.78rem;font-weight:600;color:var(--tp)}
+.u-email{font-size:.66rem;color:var(--tm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.so-btn{width:100%;padding:7px;border-radius:7px;background:transparent;border:1px solid var(--border);color:var(--tm);font-family:'DM Sans',sans-serif;font-size:.76rem;cursor:pointer;transition:all .2s}
+.so-btn:hover{border-color:var(--err);color:var(--err)}
+.main{margin-left:var(--sw);flex:1;min-height:100vh;display:flex;flex-direction:column}
+.topbar{height:56px;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(4,9,26,.88);backdrop-filter:blur(12px);position:sticky;top:0;z-index:40}
+.t-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--tp)}
+.t-date{font-size:.72rem;color:var(--tm);font-family:'DM Mono',monospace}
+.content{padding:1.5rem;flex:1}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.4rem;backdrop-filter:blur(12px)}
+.c-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;color:var(--tp);margin-bottom:.9rem;display:flex;align-items:center;gap:7px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+.mb{margin-bottom:1.2rem}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem}
+.s-lbl2{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--tm);margin-bottom:.25rem}
+.s-val{font-family:'Cormorant Garamond',serif;font-size:1.85rem;font-weight:700;color:var(--gl);line-height:1;margin-bottom:.18rem}
+.s-sub{font-size:.7rem;color:var(--ts)}
+.f-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.f-card{display:flex;flex-direction:column;gap:.55rem;padding:1.3rem;border-radius:13px;background:var(--card);border:1px solid var(--border);text-decoration:none;color:inherit;transition:all .25s}
+.f-card:hover{background:var(--n700);border-color:var(--bb);transform:translateY(-2px)}
+.f-icon{font-size:1.5rem}.f-name{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--tp)}
+.f-desc{font-size:.75rem;color:var(--tm);line-height:1.5}.f-arr{font-size:.72rem;color:var(--gd);margin-top:auto}
+.q-strip{background:linear-gradient(135deg,rgba(26,49,96,.45),rgba(12,26,56,.75));border:1px solid var(--bb);border-radius:12px;padding:1rem 1.4rem;display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem}
+.q-icon{font-size:1.4rem;flex-shrink:0}.q-text{font-family:'Cormorant Garamond',serif;font-size:.98rem;font-style:italic;color:var(--tp)}
+.q-auth{font-size:.68rem;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.sess-item{display:flex;align-items:center;gap:9px;padding:9px 13px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;margin-bottom:5px}
+.todo-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:9px;background:rgba(255,255,255,.03);border:1px solid var(--border);margin-bottom:5px}
+.badge{font-size:.62rem;font-weight:600;text-transform:uppercase;padding:2px 7px;border-radius:100px}
+.bh{background:rgba(224,92,92,.12);color:#f08080;border:1px solid rgba(224,92,92,.2)}
+.bm{background:rgba(200,168,75,.12);color:var(--gl);border:1px solid rgba(200,168,75,.2)}
+.bl{background:rgba(75,191,204,.1);color:var(--teal);border:1px solid rgba(75,191,204,.2)}
+.empty{text-align:center;padding:2rem;color:var(--tm);font-size:.855rem}
+@media(max-width:900px){.sidebar{display:none}.main{margin-left:0}.g2,.g4{grid-template-columns:1fr}.f-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.f-grid{grid-template-columns:1fr}.content{padding:1rem}}
+.btn-home {
+    width: 100%; padding: 11px 16px;
+    background: rgba(12, 13, 90, 0.04);
+    border: 1px solid var(--border); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500;
+    color: var(--text-primary); cursor: pointer; transition: all 0.2s;
+    margin-top: 1rem;
+    color:gold;
+}
+.btn-home:hover { background: rgba(12, 13, 90, 0.07); border-color: rgba(200, 168, 75, 0.4); }
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <a href="index.html" class="s-logo"><div class="s-mark">S</div><span class="s-name">Scholara</span></a>
+  <nav class="s-nav">
+    <span class="s-lbl">Overview</span>
+    <a href="dashboard.html" class="s-item active"><span class="s-icon">🏠</span>Dashboard</a>
+    <span class="s-lbl">Study Tools</span>
+    <a href="tasks.html"     class="s-item"><span class="s-icon">✅</span>Tasks</a>
+    <a href="tracker.html"   class="s-item"><span class="s-icon">📚</span>Study Tracker</a>
+    <a href="pomodoro.html"  class="s-item"><span class="s-icon">🍅</span>Pomodoro</a>
+    <a href="stopwatch.html" class="s-item"><span class="s-icon">⏲️</span>Stopwatch</a>
+    <a href="notes.html"     class="s-item"><span class="s-icon">📝</span>Notes</a>
+    <span class="s-lbl">Insights</span>
+    <a href="analytics.html" class="s-item"><span class="s-icon">📊</span>Analytics</a>
+  </nav>
+  <div class="s-bot">
+    <div class="u-card"><div class="u-av" id="uav">?</div><div><div class="u-name" id="uname">...</div><div class="u-email" id="uemail">—</div></div></div>
+    
+  </div>
+</aside>
+<div class="main">
+  <header class="topbar"><div class="t-title">Dashboard</div><span class="t-date" id="tdate"></span></header>
+  <div class="content">
+    <div class="q-strip mb"><div class="q-icon">✨</div><div><div class="q-text" id="qtext">Loading wisdom...</div><div class="q-auth" id="qauth"></div></div></div>
+    <div class="g4 mb">
+      <div class="stat"><div class="s-lbl2">Today's Study</div><div class="s-val" id="st1">0m</div><div class="s-sub">Keep going 🎯</div></div>
+      <div class="stat"><div class="s-lbl2">Tasks Done</div><div class="s-val" id="st2">0/0</div><div class="s-sub">Today</div></div>
+      <div class="stat"><div class="s-lbl2">Streak</div><div class="s-val" id="st3">0 🔥</div><div class="s-sub">Days in a row</div></div>
+      <div class="stat"><div class="s-lbl2">Notes</div><div class="s-val" id="st4">0</div><div class="s-sub">Total</div></div>
+    </div>
+    <div class="card mb">
+      <div class="c-title">🚀 Your Tools</div>
+      <div class="f-grid">
+        <a href="tasks.html"     class="f-card"><div class="f-icon">✅</div><div class="f-name">Task Manager</div><div class="f-desc">Organise assignments and deadlines by priority.</div><div class="f-arr">Open →</div></a>
+        <a href="tracker.html"   class="f-card"><div class="f-icon">📚</div><div class="f-name">Study Tracker</div><div class="f-desc">Log study sessions by subject and measure time.</div><div class="f-arr">Open →</div></a>
+        <a href="pomodoro.html"  class="f-card"><div class="f-icon">🍅</div><div class="f-name">Pomodoro Timer</div><div class="f-desc">Focus with timed work sessions and breaks.</div><div class="f-arr">Open →</div></a>
+        <a href="stopwatch.html" class="f-card"><div class="f-icon">⏲️</div><div class="f-name">Stopwatch</div><div class="f-desc">Precise timing with lap tracking.</div><div class="f-arr">Open →</div></a>
+        <a href="notes.html"     class="f-card"><div class="f-icon">📝</div><div class="f-name">Smart Notes</div><div class="f-desc">Write notes or generate them with AI.</div><div class="f-arr">Open →</div></a>
+        <a href="analytics.html" class="f-card"><div class="f-icon">📊</div><div class="f-name">Analytics</div><div class="f-desc">Charts, streaks and personalised AI study tips.</div><div class="f-arr">Open →</div></a>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card"><div class="c-title">📋 Pending Tasks <a href="tasks.html" style="font-size:.72rem;color:var(--gd);margin-left:auto;text-decoration:none;font-weight:400">All →</a></div><div id="rtasks"><div class="empty">Loading...</div></div></div>
+      <div class="card"><div class="c-title">📅 Recent Sessions <a href="tracker.html" style="font-size:.72rem;color:var(--gd);margin-left:auto;text-decoration:none;font-weight:400">All →</a></div><div id="rsess"><div class="empty">Loading...</div></div></div>
+    </div>
+   <button class="so-btn" id="sobtn">← Sign Out</button>
+  </div>
+</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAX2yhFyqaYdkwD63iEK7fQSw0_mH3yfPQ",
+  authDomain: "scholara-f7c60.firebaseapp.com",
+  projectId: "scholara-f7c60",
+  storageBucket: "scholara-f7c60.firebasestorage.app",
+  messagingSenderId: "467753876713",
+  appId: "1:467753876713:web:2f0aeb3ce3933e5ace4478"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+document.getElementById('tdate').textContent = new Date().toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+
+const QUOTES = [
+  {t:'"The mind is not a vessel to be filled, but a fire to be kindled."', a:'— Plutarch'},
+  {t:'"An investment in knowledge pays the best interest."', a:'— Benjamin Franklin'},
+  {t:'"Education is the passport to the future."', a:'— Malcolm X'},
+  {t:'"Live as if you were to die tomorrow. Learn as if you were to live forever."', a:'— Mahatma Gandhi'},
+  {t:'"The beautiful thing about learning is that no one can take it away from you."', a:'— B.B. King'},
+  {t:'"Success is no accident. It is hard work, perseverance, learning, studying, sacrifice."', a:'— Pelé'},
+  {t:'"The expert in anything was once a beginner."', a:'— Helen Hayes'},
+];
+const dq = QUOTES[new Date().getDay() % QUOTES.length];
+document.getElementById('qtext').textContent = dq.t;
+document.getElementById('qauth').textContent = dq.a;
+
+const fmt = s => { const h=Math.floor(s/3600),m=Math.floor((s%3600)/60); return h>0?`${h}h ${m}m`:`${m}m`; };
+
+onAuthStateChanged(auth, async user => {
+  if (!user) { window.location.href = 'auth.html'; return; }
+  const name = user.displayName || user.email.split('@')[0];
+  document.getElementById('uname').textContent = name;
+  document.getElementById('uemail').textContent = user.email;
+  const av = document.getElementById('uav');
+  if (user.photoURL) av.innerHTML = `<img src="${user.photoURL}"/>`;
+  else av.textContent = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  const uid = user.uid;
+  const [ts, ss, as, ns] = await Promise.all([
+    getDocs(query(collection(db,'users',uid,'todos'), orderBy('createdAt','desc'))),
+    getDocs(query(collection(db,'users',uid,'sessions'), orderBy('createdAt','desc'), limit(5))),
+    getDocs(collection(db,'users',uid,'sessions')),
+    getDocs(collection(db,'users',uid,'notes')),
+  ]);
+  const todos = ts.docs.map(d => ({...d.data(), id:d.id}));
+  document.getElementById('st2').textContent = `${todos.filter(t=>t.done).length}/${todos.length}`;
+  const pending = todos.filter(t=>!t.done).slice(0,5);
+  document.getElementById('rtasks').innerHTML = pending.length
+    ? pending.map(t=>`<div class="todo-item"><span style="color:${t.priority==='high'?'#f08080':t.priority==='low'?'var(--teal)':'var(--gold)'}">●</span><span style="flex:1;font-size:.855rem;color:var(--ts)">${t.text}</span><span class="badge ${t.priority==='high'?'bh':t.priority==='low'?'bl':'bm'}">${t.priority||'medium'}</span></div>`).join('')
+    : '<div class="empty">All done! 🎉</div>';
+  const sessions = ss.docs.map(d => ({...d.data(), id:d.id}));
+  const today = new Date().toISOString().split('T')[0];
+  const todaySecs = as.docs.filter(d=>d.data().date===today).reduce((a,d)=>a+(d.data().seconds||0),0);
+  document.getElementById('st1').textContent = fmt(todaySecs);
+  document.getElementById('rsess').innerHTML = sessions.length
+    ? sessions.map(s=>`<div class="sess-item"><span>📚</span><span style="flex:1;color:var(--ts);font-size:.855rem">${s.subject||'General'}</span><span style="color:var(--gl);font-family:'DM Mono',monospace;font-size:.8rem">${fmt(s.seconds||0)}</span><span style="font-size:.68rem;color:var(--tm);margin-left:6px">${s.date||''}</span></div>`).join('')
+    : '<div class="empty">No sessions yet</div>';
+  const allDays = [...new Set(as.docs.map(d=>d.data().date))].sort().reverse();
+  let streak=0, dd=new Date();
+  for(let i=0;i<365;i++){const ds=dd.toISOString().split('T')[0];if(allDays.includes(ds)){streak++;dd.setDate(dd.getDate()-1);}else if(i===0){dd.setDate(dd.getDate()-1);}else break;}
+  document.getElementById('st3').textContent = `${streak} 🔥`;
+  document.getElementById('st4').textContent = ns.size;
+});
+document.getElementById('sobtn').onclick = async () => { await signOut(auth); window.location.href='auth.html'; };
+</script>
+</body></html>
